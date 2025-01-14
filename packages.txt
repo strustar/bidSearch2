@@ -1,3 +1,2 @@
 chromium
-chromium-chromedriver
-microsoft-edge-stable
+chromium-driver
