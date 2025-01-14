@@ -5,7 +5,7 @@ requests
 streamlit-aggrid
 python-dateutil
 openpyxl
-BeautifulSoup
+bs4
 selenium
 
 
