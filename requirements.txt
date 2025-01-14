@@ -1,0 +1,11 @@
+streamlit
+pandas
+numpy
+requests
+streamlit-aggrid
+python-dateutil
+openpyxl
+BeautifulSoup
+selenium
+
+
