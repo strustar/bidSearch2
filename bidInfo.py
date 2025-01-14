@@ -241,14 +241,47 @@ def get_bid_data(driver, selected_urls):
 
 
 def setup_selenium():
-    """Selenium 설정"""
+    """Selenium 설정 - Chromium 사용"""
+    from selenium.webdriver.chrome.service import Service
+    from webdriver_manager.chrome import ChromeDriverManager
+    from webdriver_manager.core.os_manager import ChromeType
+
     options = webdriver.ChromeOptions()
+
+    # 필수 옵션 설정
     options.add_argument("--no-sandbox")
-    options.add_argument("--headless")
+    options.add_argument("--headless=new")  # 새로운 headless 모드 사용
     options.add_argument("--disable-gpu")
     options.add_argument("--disable-dev-shm-usage")
-    driver = webdriver.Chrome(options=options)
-    return driver
+    options.add_argument("--disable-extensions")
+
+    # 추가 안정성을 위한 옵션
+    options.add_argument("--disable-software-rasterizer")
+    options.add_argument("--disable-setuid-sandbox")
+    options.add_argument("--disable-features=VizDisplayCompositor")
+    options.add_argument("--single-process")
+
+    # 브라우저 크래시 방지 설정
+    options.add_argument("--remote-debugging-port=9222")
+    options.add_argument("--window-size=1920,1080")
+
+    # User-Agent 설정
+    options.add_argument(
+        "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    )
+
+    try:
+        service = Service()
+        driver = webdriver.Chrome(service=service, options=options)
+        return driver
+    except Exception as e:
+        st.error(f"ChromeDriver 초기화 실패: {str(e)}")
+        logging.error(f"ChromeDriver 초기화 실패: {str(e)}")
+        # 상세 오류 정보 로깅
+        import traceback
+
+        logging.error(traceback.format_exc())
+        raise
 
 
 def main():
